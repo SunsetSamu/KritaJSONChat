@@ -16,9 +16,9 @@ This is a custom chat viewer plugin for Krita that displays messages from a spec
 
 ## Preview
 
-<img src="previews/prev%20(3).png" alt="Preview" width="600">
-<img src="previews/prev%20(2).png" alt="Preview" width="600">
-<img src="previews/prev%20(1).png" alt="Preview" width="600">
+<img src="krita_json_as_chat\previews\prev (3).png" alt="Preview" width="600">
+<img src="krita_json_as_chat\previews\prev (2).png" alt="Preview" width="600">
+<img src="krita_json_as_chat\previews\prev (1).png" alt="Preview" width="600">
 
 ## Usage
 
