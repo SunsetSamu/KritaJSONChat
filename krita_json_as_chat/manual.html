@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JSON Chat Viewer Plugin</title>
+  <style>
+    body {
+      margin: 40px auto;
+      max-width: 650px;
+      line-height: 1.6;
+      font-size: 10px;
+      padding: 0 10px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.2
+    }
+    code {
+      background-color: #00853c7c;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    pre {
+      font-size: 8px;
+      background-color: #5a5a5a;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 align="center">JSON Chat Viewer Plugin for Krita</h1>
+  <hr>
+
+  <h2>Description</h2>
+  <p>
+    This is a custom chat viewer plugin for Krita that displays messages from a specifically formatted JSON file. The plugin is designed to work with user-created scripts that can convert any chat log (from Twitch, Discord, etc.) into the compatible JSON format. Messages are displayed in a clean, readable format from top to bottom (oldest to newest within the visible range), with visual styling.
+  </p>
+
+  <h2>Features</h2>
+  <ul>
+    <li><strong>Load Custom JSON</strong>: Load a chat log from a JSON file with a simple button click.</li>
+    <li><strong>Formatted Chat Display</strong>: Messages are shown as <code>[Role] Username: Message</code> with color highlighting.</li>
+    <li><strong>Message Limit Control</strong>: Set a maximum number of messages to display, showing only the most recent entries.</li>
+    <li><strong>Auto-Reload</strong>: The viewer automatically checks for changes to the JSON file every 3 seconds and updates if modified.</li>
+    <li><strong>Session Persistence</strong>: Remembers the last loaded file and message limit between Krita sessions.</li>
+    <li><strong>Send Bar</strong>: Toggle a bottom bar to write and output a simple JSON message to a local file (<code>krita_chat_output.json</code>).</li>
+    <li><strong>Installation:</strong>: <a href="https://github.com/EyeOdin/Pigment.O/wiki/Plugin-Instalation">Read this guide.</a> (<code>krita_chat_output.json</code>).</li>
+  </ul>
+
+  <h2>Preview</h2>
+
+  <img src="./previews/prev (3).png" alt="Prev" width="600">
+  <img src="./previews/prev (2).png" alt="Prev" width="600">
+  <img src="./previews/prev (1).png" alt="Prev" width="600">
+  
+  <h2>Usage</h2>
+  <p><strong>Basic Viewing:</strong></p>
+  <ol>
+    <li>Click the <strong>"Load Chat JSON..."</strong> button to select your formatted JSON file.</li>
+    <li>The chat messages will appear in the main display area.</li>
+    <li>Use the <strong>"Max:"</strong> spin box to limit how many of the most recent messages are shown.</li>
+  </ol>
+  <p><strong>Sending Output:</strong></p>
+  <ol>
+    <li>Click the <strong>"Toggle Send"</strong> button to show/hide the bottom input bar.</li>
+    <li>Type a message in the text field.</li>
+    <li>Click <strong>"Send"</strong> to write your message to <code>krita_chat_output.json</code>.</li>
+    <li>Click the <strong>📁 (Folder) button</strong> to show the output JSON file.</li>
+  </ol>
+
+  <h2>Compatible JSON Format</h2>
+  <p>
+    For the chat to display correctly, your JSON file must follow this exact structure. It is an object with a single key <code>"chat"</code>, whose value is an array (list) of messages. Each message is an array of three elements: <code>[Role, Username, Message]</code>.
+  </p>
+  <p><strong>Key Rules:</strong></p>
+  <ul>
+    <li><strong>Role</strong>: Any string as role, like <code>"Mod"</code> or <code>"Sub"</code>. If the role is <code>null</code> or missing, no tag is displayed (e.g., <code>Username: Message</code>).</li>
+    <li><strong>Username</strong>: The display name of the chatter.</li>
+    <li><strong>Message</strong>: The text content of the chat message.</li>
+  </ul>
+  <p><strong>Example JSON:</strong></p>
+  <pre><code>{
+  "chat": [
+    ["OP", "User1", "Hello everyone!"],
+    ["Sub", "User2", "Great stream!"],
+    [null, "User3", "How are you?"],
+    ["OP", "User1", "Thanks for watching!"]
+  ]
+}</code></pre>
+
+<h2>Feedback & Support</h2>
+<p>
+  This plugin is open for modification and extension. Feel free to fork and adapt it to your needs—no attribution is required.
+  <br><br>
+  For questions, bug reports, or discussions about implementation, please open a new issue in the project repository.
+</p>
+
+</body>
+
+</html>
