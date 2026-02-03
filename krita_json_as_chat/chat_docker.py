@@ -78,7 +78,7 @@ class JsonViewerDocker(DockWidget):
         
         # Selector numérico (QSpinBox)
         self.limitSpinBox = QSpinBox()
-        self.limitSpinBox.setRange(3, 100) 
+        self.limitSpinBox.setRange(1, 500) 
         self.limitSpinBox.setSingleStep(1)   # Incrementos de 1
         self.limitSpinBox.setValue(self.message_limit)
         self.limitSpinBox.setFixedWidth(40)   # Ancho fijo
@@ -122,6 +122,7 @@ class JsonViewerDocker(DockWidget):
         self.inputField = QLineEdit()
         self.inputField.setPlaceholderText("Type message here...")
         self.inputField.textChanged.connect(self.update_send_button_state)
+        self.inputField.returnPressed.connect(self.send_message)
         self.sendLayout.addWidget(self.inputField)
         
         # Botón de envío
@@ -144,7 +145,7 @@ class JsonViewerDocker(DockWidget):
         # Timer para auto-recarga
         self.timer = QTimer()
         self.timer.timeout.connect(self.check_file_update)
-        self.timer.start(3000)
+        self.timer.start(1000)
         
         # Cargar configuración de sesión anterior
         self.load_session_settings()
