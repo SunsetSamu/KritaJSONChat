@@ -8,10 +8,32 @@ import platform
 import subprocess
 
 class ChatHighlighter(QSyntaxHighlighter):
-    def __init__(self, parent, theme_color_tag, theme_color_user):
+    def __init__(self, parent, theme_color_tag):
         super().__init__(parent)
         self.theme_color_tag = theme_color_tag
-        self.theme_color_user = theme_color_user
+        # Cache de colores por usuario para no recalcular
+        self.user_colors = {}
+        
+    def get_user_color(self, username):
+        """Genera un color único y brillante para cada usuario basado en su nombre."""
+        if username in self.user_colors:
+            return self.user_colors[username]
+        
+        # Hash simple: suma de valores ASCII
+        hash_sum = sum(ord(c) for c in username)
+        
+        # Usar el hash para generar Hue (0-359), saturación y valor altos para colores brillantes
+        hue = hash_sum % 360
+        # Saturación entre 70-100% para colores vivos
+        saturation = 70 + (hash_sum % 30)
+        # Valor entre 80-100% para que sea brillante
+        value = 80 + (hash_sum % 20)
+        
+        color = QColor()
+        color.setHsv(hue, int(saturation * 2.55), int(value * 2.55))
+        
+        self.user_colors[username] = color
+        return color
         
     def highlightBlock(self, text):
         # Expresión regular para capturar: [tag] opcional + usuario + mensaje
@@ -20,22 +42,22 @@ class ChatHighlighter(QSyntaxHighlighter):
         
         if match.hasMatch():
             tag = match.captured(1)  # Grupo 1: el tag sin corchetes
-            user_start = match.capturedStart(2)  # Posición inicial del usuario
+            user = match.captured(2)  # Grupo 2: el nombre de usuario
+            user_start = match.capturedStart(2)
             user_length = match.capturedLength(2)
             
             # 1. Colorear el tag si existe
             if tag:
                 tag_format = QTextCharFormat()
                 tag_format.setForeground(self.theme_color_tag)
-                # El tag real en el texto incluye los corchetes
                 tag_pattern = QRegularExpression(r'\[[^\]]+\]')
                 tag_match = tag_pattern.match(text)
                 if tag_match.hasMatch():
                     self.setFormat(tag_match.capturedStart(), tag_match.capturedLength(), tag_format)
             
-            # 2. Colorear solo el nombre de usuario
+            # 2. Colorear el nombre de usuario con color único basado en su nombre
             user_format = QTextCharFormat()
-            user_format.setForeground(self.theme_color_user)
+            user_format.setForeground(self.get_user_color(user))
             self.setFormat(user_start, user_length, user_format)
 
 class JsonViewerDocker(DockWidget):
@@ -98,10 +120,10 @@ class JsonViewerDocker(DockWidget):
         
         # Colores del tema
         theme_color_tag = QColor(22, 163, 74)
-        theme_color_user = QColor(0, 194, 209) 
+        # theme_color_user = QColor(0, 194, 209) 
         
         self.highlighter = ChatHighlighter(self.textDisplay.document(), 
-                                           theme_color_tag, theme_color_user)
+                                           theme_color_tag)
         
         self.mainLayout.addWidget(self.textDisplay)
         
